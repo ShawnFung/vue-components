@@ -1,0 +1,55 @@
+@import "variable";
+
+.fx-table{
+  background: @fx-table-background-color;
+
+  &.scroll--x {
+    .fx-table--body-wrapper {
+      overflow-x: scroll;
+    }
+  }
+
+  &--border{
+    border-left: 1px solid @fx-table-border-color;
+    border-right: 1px solid @fx-table-border-color;
+    .fx-table--header-wrapper{
+      border-top: 1px solid @fx-table-border-color;
+    }
+    .fx-header--column,
+    .gutter{
+      border-bottom: 1px solid @fx-table-border-color;
+    }
+    .fx-body--column{
+      border-bottom: 1px solid @fx-table-border-color;
+    }
+  }
+
+  &--header-wrapper{
+    overflow: hidden;
+    background: @fx-table-header-background-color;
+
+  }
+
+  &--body-wrapper{
+  }
+
+  .fx-table--header,
+  .fx-table--body{
+    table-layout: fixed;
+  }
+
+  .fx-header--column,
+  .fx-body--column{
+    padding: 6px 10px;
+    line-height: 23px;
+    text-align: left;
+  }
+
+  .is-right{
+    text-align: right;
+  }
+  .is-center{
+    text-align: center;
+  }
+
+}
