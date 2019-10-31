@@ -1,29 +1,19 @@
-# vue-components
+# Vue-components
 
-## Project setup
-```
-npm install
-```
+已实现功能：
+- [ ] 自定义列的内容
+- [ ] 自定义表头的内容
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 使用文档
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Table-column Attributes
+参数 | 说明 | 类型 | 可选值 | 默认值
+ - | :-: | :-: | :-: | :-: |
+ label| 显示的标题 | string | — | —
+ 
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Table-column Scoped Slot
+name | 说明
+ - | :-:
+ — | 自定义列的内容，参数为 { row, column, $index }
+ header | 自定义表头的内容. 参数为 { column, $index }

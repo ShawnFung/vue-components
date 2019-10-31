@@ -36,14 +36,17 @@ export default {
       }))),
       h('thead', {}, [h('tr', {
         class: 'fx-header--row'
-      }, this.columns.map((col) => {
+      }, this.columns.map((col, colIndex) => {
         return h('th', {
           class: {
             'fx-header--column': 1,
             'is-right': col.align === 'right',
             'is-center': col.align === 'center'
           }
-        }, [h('span', col.label)])
+        }, [col.renderHeader(h, {
+          column: col,
+          $index: colIndex
+        })])
       }).concat(h('th', {
         class: 'gutter'
       })))])

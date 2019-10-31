@@ -2,8 +2,11 @@
   <div class="table-basic">
     <fx-table :data="userList" :border="true">
       <fx-table-column label="姓名" prop="name" align="center" :min-width="200">
+        <template slot="header" slot-scope="scope">
+          请问你的{{scope.column.label}}是什么?
+        </template>
         <template slot-scope="scope">
-          My Name is {{scope.row.name}}
+          我的{{scope.column.label}}是{{scope.row.name}}
         </template>
       </fx-table-column>
       <fx-table-column label="年龄" prop="age" :min-width="200"></fx-table-column>

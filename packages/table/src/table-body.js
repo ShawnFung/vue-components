@@ -49,16 +49,18 @@ export default {
           class: 'col-gutter'
         }))),
         h('tbody', {}, this.data.map((item) => {
-          return h('tr', {}, this.columns.map(col => {
+          return h('tr', {}, this.columns.map((col, colIndex) => {
             return h('td', {
               class: {
                 'fx-body--column': 1,
                 'is-right': col.align === 'right',
                 'is-center': col.align === 'center'
               }
-            }, [
-              h('span', item[col.prop])
-            ])
+            }, [col.renderCell(h, {
+              row: item,
+              column: col,
+              $index: colIndex
+            })])
           }))
         }))
       ])
