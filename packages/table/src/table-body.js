@@ -15,7 +15,18 @@ export default {
       }
     },
     height: Number,
-    tableTotalWidth: String
+    tableWidth: String,
+    rowClassName: {
+      type: [String, Function],
+      default: ''
+    },
+    cellClassName: {
+      type: [String, Function],
+      default: ''
+    }
+  },
+  data: function () {
+    return {}
   },
   render: function (h) {
     return h('div', {
@@ -35,7 +46,7 @@ export default {
           border: 0
         },
         style: {
-          width: this.tableTotalWidth
+          width: this.tableWidth
         }
       }, [
         h('colgroup', this.columns.map((col) => {
@@ -48,18 +59,26 @@ export default {
         }).concat(h('col', {
           class: 'col-gutter'
         }))),
-        h('tbody', {}, this.data.map((item) => {
-          return h('tr', {}, this.columns.map((col, colIndex) => {
+        h('tbody', {}, this.data.map((item, rowIndex) => {
+          let rowClass = this.getRowClassName({ row: item, rowIndex: rowIndex })
+          return h('tr', {
+            class: rowClass,
+            attrs: {
+              'data-index': rowIndex
+            },
+            on: {
+              mouseenter: this.$table.onMouseEnter,
+              mouseleave: this.$table.onMouseLeave
+            }
+          }, this.columns.map((col, colIndex) => {
+            let cellClass = this.getCellClassName({ row: item, column: col, rowIndex: rowIndex, columnIndex: colIndex })
             return h('td', {
-              class: {
-                'fx-body--column': 1,
-                'is-right': col.align === 'right',
-                'is-center': col.align === 'center'
-              }
+              class: cellClass
             }, [col.renderCell(h, {
               row: item,
               column: col,
-              $index: colIndex
+              $colIndex: colIndex,
+              $rowIndex: rowIndex
             })])
           }))
         }))
@@ -67,8 +86,27 @@ export default {
     ])
   },
   methods: {
-    scroll: function () {
-      console.log('scroll')
+    getRowClassName: function (params) {
+      let rowClassName = this.rowClassName
+      if (typeof rowClassName === 'function') {
+        rowClassName = rowClassName(params)
+      }
+      rowClassName = 'fx-body--row ' + rowClassName
+      return rowClassName
+    },
+    getCellClassName: function ({ row, column, rowIndex, columnIndex }) {
+      let cellClass = ['fx-body--column']
+      if (column.align === 'right') {
+        cellClass.push('is-right')
+      } else if (column.align === 'center') {
+        cellClass.push('is-center')
+      }
+      let cellClassName = this.cellClassName
+      if (typeof cellClassName === 'function') {
+        cellClassName = cellClassName({ row: row, column: column, rowIndex: rowIndex, columnIndex: columnIndex })
+      }
+      cellClass.push(cellClassName)
+      return cellClass.join(' ')
     }
   }
 }

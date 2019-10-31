@@ -1,6 +1,7 @@
 @import "variable";
 
 .fx-table{
+  position: relative;
   background: @fx-table-background-color;
 
   &.scroll--x {
@@ -12,15 +13,19 @@
   &--border{
     border-left: 1px solid @fx-table-border-color;
     border-right: 1px solid @fx-table-border-color;
-    .fx-table--header-wrapper{
+    .fx-table--header-wrapper,
+    .fx-table--body-wrapper{
       border-top: 1px solid @fx-table-border-color;
     }
-    .fx-header--column,
+    .fx-body--column,
     .gutter{
       border-bottom: 1px solid @fx-table-border-color;
     }
-    .fx-body--column{
-      border-bottom: 1px solid @fx-table-border-color;
+  }
+
+  &--stripe{
+    .fx-body--row:nth-of-type(2n){
+      background: #fafafa;
     }
   }
 
@@ -33,6 +38,34 @@
   &--body-wrapper{
   }
 
+  .fx-table__fixed,
+  .fx-table__fixed-right{
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 2px 6px rgba(0,0,0,.12);
+    border-right: 1px solid #e8eaec;
+    background: #fff;
+    .fx-table--body-wrapper{
+      overflow: hidden;
+    }
+  }
+  .fx-table__fixed-right{
+    left: auto;
+    right: 0;
+    box-shadow: 0 0 10px rgba(0,0,0,.12);
+  }
+  &.is-scrolling-left{
+    .fx-table__fixed{
+      box-shadow: none;
+    }
+  }
+  &.is-scrolling-right{
+    .fx-table__fixed-right{
+      box-shadow: none;
+    }
+  }
+
   .fx-table--header,
   .fx-table--body{
     table-layout: fixed;
@@ -41,10 +74,14 @@
   .fx-header--column,
   .fx-body--column{
     padding: 6px 10px;
+    height: 23px;
     line-height: 23px;
     text-align: left;
   }
 
+  .hover-row{
+    background: #efefef;
+  }
   .is-right{
     text-align: right;
   }

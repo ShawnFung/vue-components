@@ -8,9 +8,18 @@ export default {
         return []
       }
     },
-    tableTotalWidth: String
+    tableWidth: String,
+    headerRowClassName: {
+      type: [String, Function],
+      default: ''
+    },
+    headerCellClassName: {
+      type: [String, Function],
+      default: ''
+    }
   },
   render: function (h) {
+    let headerRowClass = this.getHeaderRowClass()
     return h('div', {
       class: 'fx-table--header-wrapper'
     }, [h('table', {
@@ -21,7 +30,7 @@ export default {
         border: 0
       },
       style: {
-        width: this.tableTotalWidth
+        width: this.tableWidth
       }
     }, [
       h('colgroup', this.columns.map((col) => {
@@ -35,14 +44,11 @@ export default {
         class: 'col-gutter'
       }))),
       h('thead', {}, [h('tr', {
-        class: 'fx-header--row'
+        class: headerRowClass
       }, this.columns.map((col, colIndex) => {
+        let cellClass = this.getHeaderCellClassName({ row: null, column: col, rowIndex: 0, columnIndex: colIndex })
         return h('th', {
-          class: {
-            'fx-header--column': 1,
-            'is-right': col.align === 'right',
-            'is-center': col.align === 'center'
-          }
+          class: cellClass
         }, [col.renderHeader(h, {
           column: col,
           $index: colIndex
@@ -51,5 +57,29 @@ export default {
         class: 'gutter'
       })))])
     ])])
+  },
+  methods: {
+    getHeaderRowClass: function () {
+      let headerRowClassName = this.headerRowClassName
+      if (typeof headerRowClassName === 'function') {
+        headerRowClassName = headerRowClassName()
+      }
+      headerRowClassName = 'fx-header--row ' + headerRowClassName
+      return headerRowClassName
+    },
+    getHeaderCellClassName: function ({ row, column, rowIndex, columnIndex }) {
+      let cellClass = ['fx-header--column']
+      if (column.align === 'right') {
+        cellClass.push('is-right')
+      } else if (column.align === 'center') {
+        cellClass.push('is-center')
+      }
+      let headerCellClassName = this.headerCellClassName
+      if (typeof headerCellClassName === 'function') {
+        headerCellClassName = headerCellClassName({ row: row, column: column, rowIndex: rowIndex, columnIndex: columnIndex })
+      }
+      cellClass.push(headerCellClassName)
+      return cellClass.join(' ')
+    }
   }
 }
