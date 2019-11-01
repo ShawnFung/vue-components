@@ -10,10 +10,10 @@
 | border |	是否带有纵向边框 | boolean |	— |	false |
 | stripe |	是否为斑马纹table	| boolean	| —	| false |
 | show-header | 是否显示表头 | boolean | — | true |
-| row-class-name	行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。|	Function({row, rowIndex})/String | —	 | — |
-| header-row-class-name	表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。| Function({row, rowIndex})/String	| — |	— |
-| cell-class-name	单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。	| Function({row, column, rowIndex, columnIndex})/String	 | —	| — |
-| header-cell-class-name	表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className。	| Function({row, column, rowIndex, columnIndex})/String | —	| — |
+| row-class-name |	行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。|	Function({row, rowIndex})/String | —	 | — |
+| header-row-class-name | 表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。| Function({row, rowIndex})/String	| — |	— |
+| cell-class-name |	 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。	| Function({row, column, rowIndex, columnIndex})/String	 | —	| — |
+| header-cell-class-name	| 表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className。	| Function({row, column, rowIndex, columnIndex})/String | —	| — |
 
 ### Table-column Attributes
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |

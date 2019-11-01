@@ -14,21 +14,25 @@ export default {
         return []
       }
     },
-    height: Number,
-    tableWidth: String,
-    rowClassName: {
-      type: [String, Function],
-      default: ''
-    },
-    cellClassName: {
-      type: [String, Function],
-      default: ''
-    }
+    height: Number
   },
   data: function () {
     return {}
   },
+  computed: {
+    width: function () {
+      let total = 0
+      this.columns.forEach(col => {
+        total += col.realWidth
+      })
+      return total + 'px'
+    }
+  },
   render: function (h) {
+    let {
+      rowClassName,
+      cellClassName
+    } = this.$table
     return h('div', {
       class: 'fx-table--body-wrapper',
       style: {
@@ -46,7 +50,7 @@ export default {
           border: 0
         },
         style: {
-          width: this.tableWidth
+          width: this.width
         }
       }, [
         h('colgroup', this.columns.map((col) => {
@@ -60,7 +64,7 @@ export default {
           class: 'col-gutter'
         }))),
         h('tbody', {}, this.data.map((item, rowIndex) => {
-          let rowClass = this.getRowClassName({ row: item, rowIndex: rowIndex })
+          let rowClass = this.getRowClassName(rowClassName, { row: item, rowIndex: rowIndex })
           return h('tr', {
             class: rowClass,
             attrs: {
@@ -71,7 +75,7 @@ export default {
               mouseleave: this.$table.onMouseLeave
             }
           }, this.columns.map((col, colIndex) => {
-            let cellClass = this.getCellClassName({ row: item, column: col, rowIndex: rowIndex, columnIndex: colIndex })
+            let cellClass = this.getCellClassName(cellClassName, { row: item, column: col, rowIndex: rowIndex, columnIndex: colIndex })
             return h('td', {
               class: cellClass
             }, [col.renderCell(h, {
@@ -86,22 +90,20 @@ export default {
     ])
   },
   methods: {
-    getRowClassName: function (params) {
-      let rowClassName = this.rowClassName
+    getRowClassName: function (rowClassName, params) {
       if (typeof rowClassName === 'function') {
         rowClassName = rowClassName(params)
       }
       rowClassName = 'fx-body--row ' + rowClassName
       return rowClassName
     },
-    getCellClassName: function ({ row, column, rowIndex, columnIndex }) {
+    getCellClassName: function (cellClassName, { row, column, rowIndex, columnIndex }) {
       let cellClass = ['fx-body--column']
       if (column.align === 'right') {
         cellClass.push('is-right')
       } else if (column.align === 'center') {
         cellClass.push('is-center')
       }
-      let cellClassName = this.cellClassName
       if (typeof cellClassName === 'function') {
         cellClassName = cellClassName({ row: row, column: column, rowIndex: rowIndex, columnIndex: columnIndex })
       }

@@ -5,7 +5,53 @@ const Methods = {
     } else if (column.fixed === 'right') {
       this.rightColumns.push(column)
     }
-    this.columns.push(column)
+    this.tableFullColumn.push(column)
+  },
+  convertToRows: function (columns = []) {
+    let result = []
+    let tableColumns = []
+    let maxLevel = 0
+    columns.forEach(col => {
+      this.updateLevel(col, col.$parent)
+      if (col.level > maxLevel) {
+        maxLevel = col.level
+      }
+    })
+    columns.forEach(col => {
+      let level = col.level
+      let childLength = this.getChildrenLength(col)
+      if (childLength === 0) {
+        col.rowspan = maxLevel + 1 - col.level
+        tableColumns.push(col)
+      } else {
+        col.colspan = childLength
+      }
+      if (result[level]) {
+        result[level].push(col)
+      } else {
+        result[level] = [col]
+      }
+    })
+    this.convertColumns = result
+    this.columns = tableColumns
+    if (maxLevel >= 1) {
+      this.isGroup = true
+    }
+  },
+  updateLevel: function (col, $parent) {
+    if ($parent && $parent.name === 'FxTableColumn') {
+      col.level += 1
+      this.updateLevel(col, $parent.$parent)
+    }
+  },
+  getChildrenLength: function (col) {
+    let length = 0
+    col.$children.forEach(item => {
+      if (item.name === 'FxTableColumn') {
+        length = length + 1
+      }
+    })
+    return length
   },
   autoCellWidth: function () {
     let tableEle = this.$el

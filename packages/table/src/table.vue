@@ -1,6 +1,6 @@
 <template>
   <div class="fx-table" :class="{
-    'fx-table--border': border,
+    'fx-table--border': border || isGroup,
     'fx-table--stripe': stripe,
     'scroll--y': overflowY,
     'scroll--x': overflowX,
@@ -11,53 +11,38 @@
     <fx-table-header
       v-if="showHeader"
       :columns="columns"
-      ref="tableHeader"
-      :tableWidth="tableWidth"
-      :header-row-class-name="headerRowClassName"
-      :header-cell-class-name="headerCellClassName"></fx-table-header>
+      :convertColumns="convertColumns"
+      ref="tableHeader"></fx-table-header>
     <fx-table-body
       :data="data"
       :columns="columns"
       ref="tableBody"
-      :tableWidth="tableWidth"
-      :height="height"
-      :row-class-name="rowClassName"
-      :cell-class-name="cellClassName"></fx-table-body>
+      :height="height"></fx-table-body>
     <div class="fx-table__fixed" v-if="leftColumns.length > 0">
       <fx-table-header
         v-if="showHeader"
         :data="data"
         :columns="leftColumns"
-        :tableWidth="leftColumnWidth"
-        :height="height"
-        :header-row-class-name="headerRowClassName"
-        :header-cell-class-name="headerCellClassName"></fx-table-header>
+        :convertColumns="convertColumns"
+      ></fx-table-header>
       <fx-table-body
         ref="leftTableBody"
         :data="data"
         :columns="leftColumns"
-        :tableWidth="leftColumnWidth"
-        :height="height"
-        :row-class-name="rowClassName"
-        :cell-class-name="cellClassName"></fx-table-body>
+        :height="height"></fx-table-body>
     </div>
     <div class="fx-table__fixed-right" v-if="rightColumns.length > 0">
       <fx-table-header
         v-if="showHeader"
         :data="data"
         :columns="rightColumns"
-        :tableWidth="rightColumnWidth"
-        :height="height"
-        :header-row-class-name="headerRowClassName"
-        :header-cell-class-name="headerCellClassName"></fx-table-header>
+        :convertColumns="convertColumns"
+      ></fx-table-header>
       <fx-table-body
         ref="rightTableBody"
         :data="data"
         :columns="rightColumns"
-        :tableWidth="rightColumnWidth"
-        :height="height"
-        :row-class-name="rowClassName"
-        :cell-class-name="cellClassName"></fx-table-body>
+        :height="height"></fx-table-body>
     </div>
   </div>
 </template>
@@ -111,7 +96,9 @@ export default {
   },
   data: function () {
     return {
+      tableFullColumn: [],
       columns: [],
+      convertColumns: [],
       leftColumns: [],
       rightColumns: [],
       // 是否存在纵向滚动条
@@ -121,24 +108,8 @@ export default {
       scrollLeft: 0,
       isScrollLeft: true,
       isScrollRight: false,
-      tableWidth: '',
-      hoverRow: ''
-    }
-  },
-  computed: {
-    leftColumnWidth: function () {
-      let total = 0
-      this.leftColumns.forEach(col => {
-        total += col.realWidth
-      })
-      return total + 'px'
-    },
-    rightColumnWidth: function () {
-      let total = 0
-      this.rightColumns.forEach(col => {
-        total += col.realWidth
-      })
-      return total + 'px'
+      hoverRow: '',
+      isGroup: false
     }
   },
   watch: {
@@ -155,6 +126,7 @@ export default {
     }
   },
   mounted: function () {
+    this.convertToRows(this.tableFullColumn)
     this.autoCellWidth()
   },
   methods: methods

@@ -29,6 +29,13 @@ export default {
     index: [Number, Function],
     fixed: String
   },
+  data: function () {
+    return {
+      name: 'FxTableColumn',
+      level: 0,
+      colspan: 1
+    }
+  },
   created () {
     this.$table.addColumn(this)
   },

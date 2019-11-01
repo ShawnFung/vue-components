@@ -6,17 +6,19 @@
           序号
         </template>
       </fx-table-column>
-      <fx-table-column label="姓名" prop="name" align="center" :min-width="200">
-        <template slot="header" slot-scope="scope">
-          请问你的{{scope.column.label}}是什么?
-        </template>
-        <template slot-scope="scope">
-          我的{{scope.column.label}}是{{scope.row.name}}
-        </template>
-      </fx-table-column>
       <fx-table-column label="年龄" prop="age" :min-width="200"></fx-table-column>
-      <fx-table-column label="学校" prop="school" :min-width="200"></fx-table-column>
-      <fx-table-column label="专业" prop="profession" :min-width="200"></fx-table-column>
+      <fx-table-column label="教育" align="center">
+        <fx-table-column label="姓名" prop="name" align="center" :min-width="200">
+          <template slot="header" slot-scope="scope">
+            请问你的{{scope.column.label}}是什么?
+          </template>
+          <template slot-scope="scope">
+            我的{{scope.column.label}}是{{scope.row.name}}
+          </template>
+        </fx-table-column>
+        <fx-table-column label="学校" prop="school" :min-width="200"></fx-table-column>
+        <fx-table-column label="专业" prop="profession" :min-width="200"></fx-table-column>
+      </fx-table-column>
       <fx-table-column label="地址" prop="address" :min-width="200"></fx-table-column>
     </fx-table>
   </div>

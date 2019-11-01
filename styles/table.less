@@ -13,13 +13,14 @@
   &--border{
     border-left: 1px solid @fx-table-border-color;
     border-right: 1px solid @fx-table-border-color;
-    .fx-table--header-wrapper,
-    .fx-table--body-wrapper{
+    .fx-table--header-wrapper{
       border-top: 1px solid @fx-table-border-color;
     }
     .fx-body--column,
+    .fx-header--column,
     .gutter{
       border-bottom: 1px solid @fx-table-border-color;
+      border-right: 1px solid @fx-table-border-color;
     }
   }
 
@@ -77,6 +78,7 @@
     height: 23px;
     line-height: 23px;
     text-align: left;
+    white-space: nowrap;
   }
 
   .hover-row{
